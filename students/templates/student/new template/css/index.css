@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+.crespoter-nav {
+    background-color: #2244AA;
+    height:8.5%;
+    box-shadow:0 0 5px black;
+    border:none;
+}
+.crespoter-container{
+    margin-top:0.2%;
+}
+body {
+    height: 100vh;
+    font-family: 'Open Sans';
+    font-size:2vh;
+    overflow-x:hidden;
+}
+.nav-header-crespoter
+{
+    color:white !important; 
+    font-family:'Open Sans';
+}
+.snow-white
+{
+    color:white !important;
+}
+.cres-active {
+    background-color: #0BB552;
+}
+.dashboard {
+    background-color: #520BB2;
+    margin-top:4%;
+    
+}
+.dashboard-active {
+    background-color: #6B7375;
+    color:white;
+}
+
+.comm-options {
+    background-color:#F6F6F6;
+    height:16vh;
+
+}
+.low-color-ash {
+    color: #96A1A7;
+}
+.comm-options h1
+{
+    font-size:3vh;
+    font-weight:bold;
+}
+
+.submenu
+{
+    padding-left:20%;
+    font-size:1.8vh;
+
+}
