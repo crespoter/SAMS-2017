@@ -4,7 +4,6 @@ from django import forms
 from django import utils
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
-# from compositekey import db
 import datetime
 
 
@@ -97,7 +96,6 @@ class Assignment(models.Model):
     Start_Time = models.DateTimeField(default=utils.timezone.now)
     End_Time = models.DateTimeField(default=utils.timezone.now)
 
-    @property
     def __str__(self):
         return str(self.Assign_ID)
 
