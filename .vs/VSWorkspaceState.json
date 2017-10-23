@@ -5,9 +5,8 @@
     "\\SE2017",
     "\\students",
     "\\students\\templates",
-    "\\students\\templates\\student",
-    "\\students\\templates\\student\\new template"
+    "\\students\\templates\\student"
   ],
-  "SelectedNode": "\\students\\views.py",
+  "SelectedNode": "\\students\\templates\\student\\CourseRegistration.html",
   "PreviewInSolutionExplorer": false
 }

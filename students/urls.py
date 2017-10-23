@@ -7,5 +7,5 @@ urlpatterns = [
         url(r'^assgnsubstatuspending/', views.AssgnSubStatusPending, name='AssgnSubmissionStatusPending'),
         url(r'^assgnsubstatusoverdue/', views.AssgnSubStatusOverdue, name='AssgnSubStatusOverdue'),
         url(r'^assgnsubstatussubmitted/', views.AssgnSubStatusSubmitted, name='AssgnSubStatusSubmitted'),
-        #url(r'^courseregistration/', views.courseregistration, name='courseregistration'),
+        url(r'^adddropcourses/', views.addDropCourses, name='addDropCourses'),
 ]

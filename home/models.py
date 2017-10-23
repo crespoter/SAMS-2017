@@ -52,7 +52,7 @@ class Courses(models.Model):
     Course_ID = models.AutoField(primary_key=True)
     Course_Name = models.CharField(max_length=50, default="")
 
-    # Inst_ID=models.ForeignKey(Personnel,to_field='Person_ID',on_delete=models.CASCADE)
+    #Inst_ID=models.ForeignKey(Personnel,to_field='Person_ID',on_delete=models.CASCADE)
     Course_description = models.CharField(max_length=255, default="")
     Course_Credits = models.IntegerField()
     Course_Year=models.IntegerField()

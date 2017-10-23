@@ -35,7 +35,7 @@ def viewattendance(request):
             absentDays = []
             for sessions in AttendanceSessions:
                 try:
-                    attendanceObject = Attendance.objects.filter(Student_ID = userPersonnelObj[0].Person_ID,ASession_ID=sessions.Session_ID)
+                    attendanceObject = Attendance.objects.filter(Student_ID = userPersonnelObj[0].Person_ID).filter(ASession_ID=sessions.Session_ID)
                     
                     totalClasses += 1
                     if(attendanceObject[0].Marked == 'P'):
@@ -62,7 +62,7 @@ def AssgnSubStatusPending(request):
     for course in CoursesByStudent:
         AssignmentsForCourse = Assignment.objects.filter(Course_ID = course.Course_ID.Course_ID)
         for assignment in AssignmentsForCourse:
-            submissionsByStudent = Submissions.objects.filter(Assign_ID = assignment,Student_ID = StudentObject[0].Person_ID)
+            submissionsByStudent = Submissions.objects.filter(Assign_ID = assignment).filter(Student_ID = StudentObject[0].Person_ID)
             if(submissionsByStudent.count() == 0):
                 now = timezone.now()
                 if (assignment.End_Time > now):
@@ -81,7 +81,7 @@ def AssgnSubStatusOverdue(request):
     for course in CoursesByStudent:
         AssignmentsForCourse = Assignment.objects.filter(Course_ID = course.Course_ID.Course_ID)
         for assignment in AssignmentsForCourse:
-            submissionsByStudent = Submissions.objects.filter(Assign_ID = assignment,Student_ID = StudentObject[0].Person_ID)
+            submissionsByStudent = Submissions.objects.filter(Assign_ID = assignment).filter(Student_ID = StudentObject[0].Person_ID)
             if(submissionsByStudent.count() == 0):
                 now = timezone.now()
                 if (assignment.End_Time < now):
@@ -101,8 +101,29 @@ def AssgnSubStatusSubmitted(request):
     for course in CoursesByStudent:
         AssignmentsForCourse = Assignment.objects.filter(Course_ID = course.Course_ID.Course_ID)
         for assignment in AssignmentsForCourse:
-            submissionsByStudent = Submissions.objects.filter(Assign_ID = assignment,Student_ID = StudentObject[0].Person_ID)
+            submissionsByStudent = Submissions.objects.filter(Assign_ID = assignment).filter(Student_ID = StudentObject[0].Person_ID)
             if(submissionsByStudent.count() != 0):
                 assignContextObject = dict(Course = course,assignment = assignment,submission = submissionsByStudent)
                 submittedAssignments.append(assignContextObject)
     return render(request, 'student/AssgnSubStatusSubmitted.html', dict(submittedAssignments=submittedAssignments))
+
+def addDropCourses(request):
+    user = request.user
+    StudentObject=Personnel.objects.filter(LDAP=user.id)
+    courses = Courses.objects.all()
+    courseSelectionOption = []
+    for course in courses:
+        CourseByStudent = Students_Courses.objects.filter(Student_ID=StudentObject[0].Person_ID).filter(Course_ID = course)
+        selected = True
+        if CourseByStudent.count() == 0:
+            selected = False
+        FacultyForCourse = Instructors_Courses.objects.filter(Course_ID = course)
+        if(FacultyForCourse.count() != 0):
+            faculty = FacultyForCourse[0].Inst_ID
+        else:
+            faculty = "Yet To Be Decided"
+        courseSelectionObj = dict(course=course,selected=selected)
+        courseSelectionOption.append(courseSelectionObj)
+    return render(request,'student/CourseRegistration.html',dict(courses = courseSelectionOption))
+
+
