@@ -16,7 +16,9 @@ from django.utils import timezone
 
 @login_required(login_url="/login/")
 def dashboard(request):
-    return render(request, "student/dashboard.html", {})
+    user = request.user;
+    print(user)
+    return render(request, "student/index.html", dict(name=user))
 
 
 
@@ -110,20 +112,33 @@ def AssgnSubStatusSubmitted(request):
 def addDropCourses(request):
     user = request.user
     StudentObject=Personnel.objects.filter(LDAP=user.id)
+    
     courses = Courses.objects.all()
     courseSelectionOption = []
     for course in courses:
-        CourseByStudent = Students_Courses.objects.filter(Student_ID=StudentObject[0].Person_ID).filter(Course_ID = course)
+        CourseByStudent = Students_Courses.objects.filter(Student_ID=StudentObject[0].Person_ID).filter(Course_ID = course.Course_ID)
         selected = True
         if CourseByStudent.count() == 0:
             selected = False
-        FacultyForCourse = Instructors_Courses.objects.filter(Course_ID = course)
+        FacultyForCourse = Instructors_Courses.objects.filter(Course_ID = course.Course_ID)
         if(FacultyForCourse.count() != 0):
             faculty = FacultyForCourse[0].Inst_ID
         else:
             faculty = "Yet To Be Decided"
-        courseSelectionObj = dict(course=course,selected=selected)
+        courseSelectionObj = dict(course=course,selected=selected,faculty = faculty)
         courseSelectionOption.append(courseSelectionObj)
     return render(request,'student/CourseRegistration.html',dict(courses = courseSelectionOption))
+
+def registerCourses(request):
+    user = request.user
+    StudentObject=Personnel.objects.filter(LDAP=user.id)
+    courses = Courses.objects.all()
+    for course in courses:
+        CourseByStudent = Students_Courses.objects.filter(Student_ID=StudentObject[0].Person_ID).filter(Course_ID = course.Course_ID)
+        if (request.POST.get(str(course.Course_ID)) and CourseByStudent.count() == 0):       
+            registerStudent = CourseByStudent.create(Student_ID = StudentObject[0],Course_ID = course,Reg_Date = datetime.datetime.now())
+        elif (CourseByStudent.count() != 0 and not request.POST.get(str(course.Course_ID))):
+            CourseByStudent.delete()
+    return render(request, "student/index.html", {})
 
 
